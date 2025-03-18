@@ -25,12 +25,12 @@ function isNumericAndLessThanFourDigits(input: string): boolean { // Thanks Chat
 
 export function apply(ctx: Context, config: Config) {
   ctx.on('message-created', (session) => {
-    if (!isNumericAndLessThanFourDigits(session.content)) return
+    if (!isNumericAndLessThanFourDigits(session.stripped.content.trim())) return
     if (!config.enabledGuilds.includes(session.guildId)) return
-    const numericValue = Number(session.content);
+    const numericValue = Number(session.stripped.content.trim());
     console.log(numericValue)
     if (numericValue < config.minNumber || numericValue > config.maxNumber) return;
-    const response = config.frontLink + session.content + config.backLink
+    const response = config.frontLink + session.stripped.content.trim() + config.backLink
     session.send(response)
     return
   })
